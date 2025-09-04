@@ -1,0 +1,47 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+
+# محیط‌های مجازی
+venv/
+ENV/
+env/
+.venv/
+
+# فایل‌های پکیج
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# لاگ‌ها
+*.log
+
+# ---- Django ----
+*.pot
+*.pyc
+*.pyo
+*.mo
+*.db
+db.sqlite3
+media/
+staticfiles/
+static/
+
+# Migrations
+**/migrations/
+!**/migrations/__init__.py
+
+# ---- PostgreSQL ----
+*.sql
+*.dump
+
+# ---- IDE ----
+.vscode/
+.idea/
+
+# ---- سیستم عامل ----
+.DS_Store
+Thumbs.db
