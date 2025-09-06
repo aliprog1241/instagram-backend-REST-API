@@ -22,3 +22,15 @@ class Comment(BaseModel):
     def __str__(self):
         return self.caption
 
+
+class Like(BaseModel):
+    user = models.ForeignKey(User, related_name='likes', on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, related_name='likes', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _('like')
+        verbose_name_plural = _('likes')
+
+    def __str__(self):
+        return "{} >> {}".format(self.user, self.post)
+
