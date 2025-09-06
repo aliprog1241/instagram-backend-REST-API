@@ -1,6 +1,6 @@
 
 from django.db import models
-from lib.common_models import BaseModel
+from lib.commen_models import BaseModel
 from django.utils.translation import gettext_lazy as _
 
 # from django.contrib.postgres.fields import JSONField
