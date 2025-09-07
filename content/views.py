@@ -29,5 +29,13 @@ class TagListApi(APIView):
         #         'posts': tag.posts.count(),
         #     })
         serializer = TagListSerializer(tags, many=True)
-
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    def post(self,request, *args, **kwargs):
+        tags = Tag.objects.all()
+        serializer = TagListSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response( status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
