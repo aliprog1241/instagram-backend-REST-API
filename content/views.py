@@ -5,14 +5,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from content.models import Tag
-from content.serializers import TagSerializer
-
+from content.serializers import TagDetailSerializer, TagListSerializer
 
 
 class TagDetailApi(APIView):
     def get(self, request, pk, *args, **kwargs):
         tag = get_object_or_404(Tag, **{'pk':pk})
-        serializer = TagSerializer(tag, many=False)
+        serializer = TagDetailSerializer(tag, many=False)
         return Response( serializer.data, status=status.HTTP_200_OK)
 
 
@@ -29,6 +28,6 @@ class TagListApi(APIView):
         #         'title': tag.title,
         #         'posts': tag.posts.count(),
         #     })
-        serializer = TagSerializer(tags, many=True)
+        serializer = TagListSerializer(tags, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
