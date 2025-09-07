@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from content.models import Tag, Post
+from content.models import Tag, Post, PostMedia
 from location.serializers import LocationSerializer
 
 
@@ -37,15 +37,17 @@ class TagDetailSerializer(serializers.ModelSerializer):
         return obj.posts.count()
 
 
+class PostMediaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostMedia
+        fields = ('media_type', 'media_file')
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username')
     location = LocationSerializer()
-
-
-
+    media = PostMediaSerializer(many=True)
 
     class Meta:
         model = Post
-        fields = ('caption','user', 'location')
+        fields = ('caption','user', 'location', 'media')
