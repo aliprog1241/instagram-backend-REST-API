@@ -1,26 +1,19 @@
+from gc import get_objects
 
+from rest_framework.generics import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from content.models import Tag
+from content.serializers import TagSerializer
 
 
 
 class TagDetailApi(APIView):
     def get(self, request, pk, *args, **kwargs):
-        tags = Tag.objects.filter(pk=pk)
-
-        if not tags.exists():
-            return Response('not found',status=status.HTTP_404_NOT_FOUND)
-
-        tag = tags.first()
-
-        return Response(
-            {
-                'id': tag.id,
-                'title': tag.title,
-                'posts': tag.posts.count(),
-            },   status=status.HTTP_200_OK)
+        tag = get_object_or_404(Tag, **{'pk':pk})
+        serializer = TagSerializer(tag, many=False)
+        return Response( serializer.data, status=status.HTTP_200_OK)
 
 
 class TagListApi(APIView):
@@ -28,13 +21,14 @@ class TagListApi(APIView):
     def get(self,request, *args, **kwargs):
         tags = Tag.objects.all()
 
+        #wrong way!!!!!
+        # data = list()
+        # for tag in tags:
+        #     data.append({
+        #         'id': tag.id,
+        #         'title': tag.title,
+        #         'posts': tag.posts.count(),
+        #     })
+        serializer = TagSerializer(tags, many=True)
 
-        data = list()
-        for tag in tags:
-            data.append({
-                'id': tag.id,
-                'title': tag.title,
-                'posts': tag.posts.count(),
-            })
-
-        return Response(data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
