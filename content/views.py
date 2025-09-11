@@ -1,10 +1,13 @@
 from gc import get_objects
 
 from rest_framework.generics import get_object_or_404
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 from content.models import Tag, Post
 from content.serializers import TagDetailSerializer, TagListSerializer, PostDetailSerializer
 
@@ -33,7 +36,8 @@ class TagListApi(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class TAglistApi(APIView):
-    permission_classes = (IsAuthenticatedOrReadOnly, )
+    permission_classes = (IsAuthenticated, )
+    authentication_classes = (SessionAuthentication, JWTAuthentication)
     def get(self,request,*args, **kwargs):
         tags = Tag.objects.all()
         serializer = TagListSerializer(tags, many=True)
