@@ -1,6 +1,6 @@
 from gc import get_objects
 
-from rest_framework.generics import get_object_or_404
+from rest_framework.generics import get_object_or_404, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
@@ -35,20 +35,16 @@ class TagListApi(APIView):
             return Response( status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-class TAglistApi(APIView):
+class TAglistApi(ListAPIView):
+    queryset = Tag.objects.all()
+    serializer_class = TagListSerializer
     permission_classes = (IsAuthenticated, )
-    authentication_classes = (SessionAuthentication, JWTAuthentication)
-    def get(self,request,*args, **kwargs):
-        tags = Tag.objects.all()
-        serializer = TagListSerializer(tags, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self,request,*args, **kwargs):
-        serializer = TagListSerializer(data=request.data)
-        if serializer.is_valid():
-            instance = serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class TagCreateApiview(APIView):
+    queryset = Tag.objects.all()
+    serializer_class = TagListSerializer
+
 
 class PostDetailAPI(APIView):
     def get(self, request, pk, *args, **kwargs):
