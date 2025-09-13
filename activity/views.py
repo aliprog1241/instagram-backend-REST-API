@@ -8,7 +8,7 @@ from activity.serializer import CommentCreateSerializer, CommentListSerializer
 
 
 class CommentListCreatAPIView(ListCreateAPIView):
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.filter(reply_to__isnull=True)
     serializer_class = CommentCreateSerializer
     permission_classes = (IsAuthenticated,)
 
@@ -23,7 +23,7 @@ class CommentListCreatAPIView(ListCreateAPIView):
 
 
 class CommentRetrieveAPIView(RetrieveUpdateAPIView):
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.filter(reply_to__isnull=True)
     serializer_class = CommentListSerializer
     permission_classes = (IsAuthenticated,)
 
