@@ -1,5 +1,6 @@
-from django.shortcuts import render
-from rest_framework.generics import CreateAPIView, ListCreateAPIView
+
+from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, \
+    RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from activity.models import Comment
@@ -19,3 +20,13 @@ class CommentListCreatAPIView(ListCreateAPIView):
             return CommentListSerializer
 
         return self.serializer_class
+
+
+class CommentRetrieveAPIView(RetrieveUpdateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentListSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return self.serializer_class
+        return CommentCreateSerializer
