@@ -23,6 +23,13 @@ class CommentCreateSerializer(serializers.ModelSerializer):
         attrs['created_time'] = timezone.now()
         return attrs
 
+class CommentReplyListSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username')
+
+    class Meta:
+        model = Comment
+        fields = ('id', 'caption')
+
 
 class CommentListSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username')
