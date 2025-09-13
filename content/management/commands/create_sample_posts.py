@@ -26,3 +26,15 @@ class Command(BaseCommand):
 
         created_posts = list()
 
+
+        for i in range(200):
+            post = Post.objects.create(
+                user=choice(users), location=choice(location), caption=choice(SAMPLE_CAPTION)
+            )
+
+            post.media.add(*sample(list(media_images), randint(1, len(media_images))))
+            created_posts.append(post)
+
+
+            return f"{len(created_posts)}created."
+
