@@ -23,17 +23,27 @@ class CommentCreateSerializer(serializers.ModelSerializer):
         attrs['created_time'] = timezone.now()
         return attrs
 
-class CommentReplyListSerializer(serializers.ModelSerializer):
+class CommentRepliesListSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username')
 
     class Meta:
         model = Comment
-        fields = ('id', 'caption')
+        fields = ('id', 'caption', 'user')
 
 
 class CommentListSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username')
+    replies = serializers.SerializerMethodField()
+
+
     class Meta:
         model = Comment
-        fields = ('id', 'user','caption', 'post', 'reply_to')
-        read_only_fields = ('user',)
+        fields = ('id', 'user','caption', 'replies')
+
+    def get_replies(self, obj):
+        qs = obj.replies.all()[:10]
+        if qs.count() > 10:
+            qs = qs[:10]
+
+        serializer = CommentRepliesListSerializer(qs, many=True)
+        return serializer.data
