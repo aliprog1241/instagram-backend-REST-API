@@ -25,8 +25,13 @@ class CommentListCreatAPIView(ListCreateAPIView):
 class CommentRetrieveAPIView(RetrieveUpdateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentListSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
             return self.serializer_class
         return CommentCreateSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(user=self.request.user)
