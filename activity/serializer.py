@@ -14,14 +14,17 @@ class CommentCreateSerializer(serializers.ModelSerializer):
         if len(attr) > 30:
             raise ValidationError(_('your caption should not be longer than 30 characters'))
         return attr
+
     def validate_reply_to(self, attr):
-        if attr.reply_to is not None:
-            raise ValidationError(_('You cannot specify a reply to a post'))
+
+        if attr and attr.reply_to is not None:
+            raise ValidationError(_('You cannot reply to a reply'))
         return attr
 
     def validate(self, attrs):
         attrs['created_time'] = timezone.now()
         return attrs
+
 
 class CommentRepliesListSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username')
@@ -35,15 +38,11 @@ class CommentListSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username')
     replies = serializers.SerializerMethodField()
 
-
     class Meta:
         model = Comment
-        fields = ('id', 'user','caption', 'replies')
+        fields = ('id', 'user', 'caption', 'replies')
 
     def get_replies(self, obj):
         qs = obj.replies.all()[:10]
-        if qs.count() > 10:
-            qs = qs[:10]
-
         serializer = CommentRepliesListSerializer(qs, many=True)
         return serializer.data

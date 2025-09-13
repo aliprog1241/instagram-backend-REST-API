@@ -1,6 +1,6 @@
 
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, \
-    RetrieveUpdateAPIView
+    RetrieveUpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from activity.models import Comment
@@ -22,8 +22,8 @@ class CommentListCreatAPIView(ListCreateAPIView):
         return self.serializer_class
 
 
-class CommentRetrieveAPIView(RetrieveUpdateAPIView):
-    queryset = Comment.objects.filter(reply_to__isnull=True)
+class CommentRetrieveAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
     serializer_class = CommentListSerializer
     permission_classes = (IsAuthenticated,)
 
