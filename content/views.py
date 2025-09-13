@@ -51,3 +51,13 @@ class PostDetailAPI(APIView):
         instance = get_object_or_404(Post, **{'pk':pk})
         serializer = PostDetailSerializer(instance)
         return Response(serializer.data)
+
+
+class UserPostListApiview(APIView):
+    queryset = Post.objects.all()
+    lookup_url_kwarg = 'user_id'
+    serializer_class = PostDetailSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(user_id=self.kwargs[self.lookup_url_kwarg])
