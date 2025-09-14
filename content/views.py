@@ -53,7 +53,7 @@ class PostDetailAPI(APIView):
         return Response(serializer.data)
 
 
-class UserPostListApiview(APIView):
+class UserPostListApiview(ListAPIView):
     queryset = Post.objects.all()
     lookup_url_kwarg = 'user_id'
     serializer_class = PostDetailSerializer

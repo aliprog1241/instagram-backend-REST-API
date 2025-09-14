@@ -32,7 +32,7 @@ class TagDetailSerializer(serializers.ModelSerializer):
     posts = serializers.SerializerMethodField()
     class Meta:
         model = Tag
-        fields = ('id','title')
+        fields = ('id','title', 'posts')
 
     def get_posts(self, obj):
         return obj.posts.count()
@@ -55,6 +55,6 @@ class PostDetailSerializer(serializers.ModelSerializer):
         fields = ('caption','user', 'location', 'media', 'comments')
 
 
-    def  get_comments(self, obj):
+    def get_comments(self, obj):
         serializers = CommentListSerializer(obj.comments.filter(reply_to__isnull = True), many=True)
         return serializers.data
