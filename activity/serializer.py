@@ -2,7 +2,7 @@ from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from activity.models import Comment
+from activity.models import Comment, Like
 from content.models import Post
 
 

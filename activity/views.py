@@ -1,10 +1,13 @@
+from http.client import responses
 
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, \
     RetrieveUpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from activity.models import Comment, Like
 from activity.serializer import CommentCreateSerializer, CommentListSerializer, PostLikeSerializer
+from lib.permissions import HasPostPermissions
 
 
 class CommentListCreatAPIView(ListCreateAPIView):
@@ -20,14 +23,14 @@ class CommentListCreatAPIView(ListCreateAPIView):
             return CommentListSerializer
 
         return self.serializer_class
-class LikeListCreatAPIView(ListCreateAPIView):
+class LikeListCreatAPIView(RetrieveAPIView):
     queryset = Like.objects.all()
     serializer_class = PostLikeSerializer
+    permission_classes = [IsAuthenticated, HasPostPermissions]
 
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
+    def post(self, request, pk, *args, **kwargs):
+        object = self.get_object()
+        return Response()
 
 class CommentRetrieveAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()

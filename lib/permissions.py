@@ -14,4 +14,8 @@ class RelationExists(BasePermission):
 
         return False
 
-    # def has_object_permission(self, request, view, obj):
+
+class HasPostPermissions(BasePermission):
+    def has_object_permission(self, request, view, obj):
+
+        return Relation.objects.filter(from_user=request.user, to_user=obj.user).exists() | request.user == obj.user
