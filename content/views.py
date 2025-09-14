@@ -73,7 +73,11 @@ class UserPostListApiview(ListAPIView):
 
 class UserPostReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Post.objects.all()
-    lookup_url_kwarg = 'username'
+    lookup_url_kwarg = 'pk'
     serializer_class = PostDetailSerializer
     pagination_class = StandardPagination
-    permission_classes = [IsAuthenticated, RelationExists]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(user__username=self.kwargs['username'])
