@@ -10,6 +10,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from content.models import Tag, Post
 from content.serializers import TagDetailSerializer, TagListSerializer, PostDetailSerializer
+from lib.pagination import SmallPageNumberPagination, StandardPagination
 
 
 class TagDetailApi(APIView):
@@ -39,6 +40,7 @@ class TAglistApi(ListAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagListSerializer
     permission_classes = (IsAuthenticated, )
+    pagination_class = SmallPageNumberPagination
 
 
 class TagCreateApiview(APIView):
@@ -57,6 +59,8 @@ class UserPostListApiview(ListAPIView):
     queryset = Post.objects.all()
     lookup_url_kwarg = 'user_id'
     serializer_class = PostDetailSerializer
+    pagination_class = StandardPagination
+    permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
         qs = super().get_queryset()
