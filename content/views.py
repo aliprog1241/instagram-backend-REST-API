@@ -60,7 +60,7 @@ class UserPostListApiview(ListAPIView):
     lookup_url_kwarg = 'user_id'
     serializer_class = PostDetailSerializer
     pagination_class = StandardPagination
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAuthenticated, RelationExists]
 
     def get_queryset(self):
         qs = super().get_queryset()
