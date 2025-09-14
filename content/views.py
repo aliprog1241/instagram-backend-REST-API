@@ -3,10 +3,9 @@ from gc import get_objects
 from rest_framework.generics import get_object_or_404, ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework import viewsets
 
 from content.models import Tag, Post
 from content.serializers import TagDetailSerializer, TagListSerializer, PostDetailSerializer
@@ -70,3 +69,10 @@ class UserPostListApiview(ListAPIView):
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.filter(user_id=self.kwargs[self.lookup_url_kwarg])
+
+
+class UserPostReadOnlyView(viewsets.ReadOnlyModelViewSet):
+    def retrieve(self, request, *args, **kwargs):
+        pass
+    def list(self, request, *args, **kwargs):
+        pass
