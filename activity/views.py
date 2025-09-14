@@ -3,8 +3,8 @@ from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, UpdateAP
     RetrieveUpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from activity.models import Comment
-from activity.serializer import CommentCreateSerializer, CommentListSerializer
+from activity.models import Comment, Like
+from activity.serializer import CommentCreateSerializer, CommentListSerializer, PostLikeSerializer
 
 
 class CommentListCreatAPIView(ListCreateAPIView):
@@ -20,6 +20,13 @@ class CommentListCreatAPIView(ListCreateAPIView):
             return CommentListSerializer
 
         return self.serializer_class
+class LikeListCreatAPIView(ListCreateAPIView):
+    queryset = Like.objects.all()
+    serializer_class = PostLikeSerializer
+
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class CommentRetrieveAPIView(RetrieveUpdateDestroyAPIView):

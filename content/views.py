@@ -1,6 +1,6 @@
 from gc import get_objects
 
-from rest_framework.generics import get_object_or_404, ListAPIView
+from rest_framework.generics import get_object_or_404, ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
@@ -49,11 +49,15 @@ class TagCreateApiview(APIView):
     serializer_class = TagListSerializer
 
 
-class PostDetailAPI(APIView):
-    def get(self, request, pk, *args, **kwargs):
-        instance = get_object_or_404(Post, **{'pk':pk})
-        serializer = PostDetailSerializer(instance)
-        return Response(serializer.data)
+class PostDetailAPI(RetrieveAPIView):
+    permission_classes = [IsAuthenticated, RelationExists]
+    serializer_class = PostDetailSerializer
+    queryset = Post.objects.all()
+
+    # def get(self, request, pk, *args, **kwargs):
+    #     instance = get_object_or_404(Post, **{'pk':pk})
+    #     serializer = PostDetailSerializer(instance)
+    #     return Response(serializer.data)
 
 
 class UserPostListApiview(ListAPIView):

@@ -3,6 +3,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from activity.models import Comment
+from content.models import Post
 
 
 class CommentCreateSerializer(serializers.ModelSerializer):
@@ -46,3 +47,10 @@ class CommentListSerializer(serializers.ModelSerializer):
         qs = obj.replies.all()[:10]
         serializer = CommentRepliesListSerializer(qs, many=True)
         return serializer.data
+
+
+class PostLikeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Like
+        fields = ('post' ,)

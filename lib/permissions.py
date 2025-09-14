@@ -13,3 +13,5 @@ class RelationExists(BasePermission):
             return relation_exists
 
         return False
+
+    # def has_object_permission(self, request, view, obj):
