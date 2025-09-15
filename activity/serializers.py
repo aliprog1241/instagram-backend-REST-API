@@ -2,10 +2,12 @@ from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+
 from activity.models import Comment, Like
 from content.models import Post
 
 
+# -------------------- COMMENTS --------------------
 class CommentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
@@ -13,11 +15,10 @@ class CommentCreateSerializer(serializers.ModelSerializer):
 
     def validate_caption(self, attr):
         if len(attr) > 30:
-            raise ValidationError(_('your caption should not be longer than 30 characters'))
+            raise ValidationError(_('Your caption should not be longer than 30 characters'))
         return attr
 
     def validate_reply_to(self, attr):
-
         if attr and attr.reply_to is not None:
             raise ValidationError(_('You cannot reply to a reply'))
         return attr
@@ -49,8 +50,10 @@ class CommentListSerializer(serializers.ModelSerializer):
         return serializer.data
 
 
-class PostLikeSerializer(serializers.ModelSerializer):
+# -------------------- LIKES --------------------
+class LikeSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username')
 
     class Meta:
         model = Like
-        fields = ('post' ,)
+        fields = ('user', )

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from activity.serializer import CommentListSerializer
+from activity.models import Like
+from activity.serializers import CommentListSerializer
 from content.models import Tag, Post, PostMedia
 from location.serializers import LocationSerializer
 
@@ -58,3 +59,4 @@ class PostDetailSerializer(serializers.ModelSerializer):
     def get_comments(self, obj):
         serializers = CommentListSerializer(obj.comments.filter(reply_to__isnull = True), many=True)
         return serializers.data
+
