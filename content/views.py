@@ -1,4 +1,5 @@
 from gc import get_objects
+from itertools import permutations
 
 from rest_framework.generics import get_object_or_404, ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -76,8 +77,18 @@ class UserPostReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_url_kwarg = 'pk'
     serializer_class = PostDetailSerializer
     pagination_class = StandardPagination
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, RelationExists]
 
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.filter(user__username=self.kwargs['username'])
+
+
+    def get_permissions(self):
+        if self.action == 'list':
+            permission_classes = [IsAuthenticated,]
+
+        else:
+            permission_classes = [IsAuthenticated, RelationExists]
+
+        return [permission() for permission in permission_classes]
