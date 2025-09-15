@@ -5,14 +5,11 @@ from  relation.models import Relation
 User = get_user_model()
 
 class RelationExists(BasePermission):
+
+    message = "you have not followed this account"
     def has_permission(self, request, view):
-        user = User.objects.filter(id=view.kwargs['user_id']).first()
-        if user:
+        return  Relation.objects.filter(from_user=request.user, to_user__username=view.kwargs['username']).exists()
 
-            relation_exists = Relation.objects.filter(from_user=request.user, to_user=view.kwargs['user_id']).exists()
-            return relation_exists
-
-        return False
 
 
 class HasPostPermissions(BasePermission):
