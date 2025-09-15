@@ -64,7 +64,7 @@ class UserPostListApiview(ListAPIView):
     queryset = Post.objects.all()
     lookup_url_kwarg = 'user_id'
     serializer_class = PostDetailSerializer
-    pagination_class = StandardPagination
+    pagination_class = SmallPageNumberPagination
     permission_classes = [IsAuthenticated, RelationExists]
 
     def get_queryset(self):
@@ -72,11 +72,11 @@ class UserPostListApiview(ListAPIView):
         return qs.filter(user_id=self.kwargs[self.lookup_url_kwarg])
 
 
-class UserPostReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
+class UserPostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     lookup_url_kwarg = 'pk'
     serializer_class = PostDetailSerializer
-    pagination_class = StandardPagination
+    pagination_class = SmallPageNumberPagination
     permission_classes = [IsAuthenticated, RelationExists]
 
     def get_queryset(self):

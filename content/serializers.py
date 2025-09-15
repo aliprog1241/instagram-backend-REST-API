@@ -52,7 +52,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('caption','user', 'location', 'media', 'comments')
+        fields = ('id', 'caption','user', 'location', 'media', 'comments')
 
 
     def get_comments(self, obj):
