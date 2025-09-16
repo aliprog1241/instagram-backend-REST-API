@@ -138,14 +138,14 @@ REST_FRAMEWORK = {
     )if DEBUG else (
     'rest_framework_simplejwt.authentication.JWTAuthentication'
     ),
-    'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 15,
-    'DEFAULT_SCHEMA_CLASS':[
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle',
-    ],
+    # 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 15,
+    # 'DEFAULT_SCHEMA_CLASS':[
+    #     'rest_framework.throttling.AnonRateThrottle',
+    #     'rest_framework.throttling.UserRateThrottle',
+    # ],
     'DEFAULT_THROTTLE_RATES':{
-        'anon':'100/day',
-        'user':'1000/day',
+        'anon':'3/m',
+        'user':'5/m',
     }
 }

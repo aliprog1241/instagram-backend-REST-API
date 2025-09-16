@@ -2,6 +2,7 @@ from itertools import permutations
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404, ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.throttling import UserRateThrottle
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, viewsets
@@ -73,6 +74,7 @@ class UserPostViewSet(viewsets.ModelViewSet):
     serializer_class = PostDetailSerializer
     pagination_class = SmallPageNumberPagination
     permission_classes = [IsAuthenticated, RelationExists]
+    throttle_classes = [UserRateThrottle]
 
     def get_queryset(self):
         qs = super().get_queryset()
