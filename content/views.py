@@ -11,7 +11,7 @@ from content.models import Tag, Post
 from content.serializers import TagDetailSerializer, TagListSerializer, PostDetailSerializer
 from lib.pagination import SmallPageNumberPagination
 from lib.permissions import RelationExists
-
+from rest_framework import throttling
 
 # -------------------- TAG VIEWS --------------------
 
