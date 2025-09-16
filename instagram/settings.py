@@ -147,5 +147,8 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES':{
         'anon':'3/m',
         'user':'5/m',
-    }
+        'custom':'20/h',
+    },
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.AcceptHeaderVersioning'
+
 }

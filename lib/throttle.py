@@ -1,2 +1,6 @@
-from rest_framework import throttling
+from rest_framework.throttling import UserRateThrottle
+
+class CustomThrottle(UserRateThrottle):
+    scope = 'custom'
+
 

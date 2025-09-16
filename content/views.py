@@ -7,12 +7,15 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, viewsets
 
-from activity.serializers import LikeSerializer
+from activity.serializers import LikeSerializer, NewLikeSerializer
 from content.models import Tag, Post
 from content.serializers import TagDetailSerializer, TagListSerializer, PostDetailSerializer
 from lib.pagination import SmallPageNumberPagination
 from lib.permissions import RelationExists
-from rest_framework import throttling
+from rest_framework import versioning
+
+from lib.throttle import CustomThrottle
+
 
 # -------------------- TAG VIEWS --------------------
 
@@ -63,6 +66,7 @@ class UserPostListApiview(ListAPIView):
     serializer_class = PostDetailSerializer
     pagination_class = SmallPageNumberPagination
     permission_classes = [IsAuthenticated, RelationExists]
+    throttle_classes = [CustomThrottle]
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -92,7 +96,10 @@ class UserPostViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.action == 'get_likes_list':
-            return LikeSerializer
+            if self.request.version == '1.0':
+                return LikeSerializer
+            else:
+                return NewLikeSerializer
         return self.serializer_class
 
     @action(detail=True, methods=['get'])
